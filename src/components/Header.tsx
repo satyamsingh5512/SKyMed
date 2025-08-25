@@ -1,5 +1,6 @@
 import React from 'react';
-import { Menu, Bell, User, Activity, Zap } from 'lucide-react';
+import { Menu, Bell, User, Activity } from 'lucide-react';
+import SkyMedLogo from './SkyMedLogo';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -17,9 +18,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
             <Menu className="w-6 h-6" />
           </button>
           <div className="flex items-center ml-4">
-            <div className="bg-blue-600 p-2 rounded-lg">
-              <Zap className="w-6 h-6 text-white" />
-            </div>
+            <SkyMedLogo size="md" />
             <div className="ml-3">
               <h1 className="text-xl font-bold text-gray-900">SkyMed</h1>
               <p className="text-sm text-gray-600">Emergency Response Network</p>

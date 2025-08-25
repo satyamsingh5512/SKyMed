@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Clock, Package, CheckCircle, Truck, Plane } from 'lucide-react';
+import MapView from '../components/MapView';
+import { useTracking } from '../hooks/useTracking';
 
 const TrackParcel: React.FC = () => {
   const [trackingId, setTrackingId] = useState('');
   const [trackingData, setTrackingData] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { trackDelivery, loading, error } = useTracking();
 
   // Sample tracking data
   const sampleTrackingData = {
@@ -50,13 +52,93 @@ const TrackParcel: React.FC = () => {
     }
   };
 
-  const handleTrack = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      const data = sampleTrackingData[trackingId as keyof typeof sampleTrackingData];
-      setTrackingData(data || null);
-      setIsLoading(false);
-    }, 1000);
+  const handleTrack = async () => {
+    if (!trackingId.trim()) return;
+    
+    const delivery = await trackDelivery(trackingId.trim());
+    if (delivery) {
+      // Transform database data to match the expected format
+      const transformedData = {
+        id: `SP-${delivery.id.slice(-6).toUpperCase()}`,
+        type: delivery.package_type,
+        status: delivery.status,
+        urgency: delivery.priority,
+        from: delivery.pickup_address,
+        to: delivery.delivery_address,
+        estimatedDelivery: delivery.status === 'delivered' ? 'Delivered' : formatTimeRemaining(delivery.estimated_delivery),
+        currentLocation: getCurrentLocation(delivery.status, delivery.tracking),
+        droneId: 'DR-001', // You can enhance this with actual drone assignment
+        timeline: generateTimeline(delivery),
+        recipient: delivery.recipient_name,
+        phone: delivery.recipient_phone
+      };
+      setTrackingData(transformedData);
+    } else {
+      setTrackingData(null);
+    }
+  };
+
+  const formatTimeRemaining = (estimatedDelivery: string): string => {
+    const now = new Date();
+    const delivery = new Date(estimatedDelivery);
+    const diffInMinutes = Math.floor((delivery.getTime() - now.getTime()) / (1000 * 60));
+    
+    if (diffInMinutes <= 0) return 'Delivered';
+    if (diffInMinutes < 60) return `${diffInMinutes} mins`;
+    return `${Math.floor(diffInMinutes / 60)}h ${diffInMinutes % 60}m`;
+  };
+
+  const getCurrentLocation = (status: string, tracking: any[]): string => {
+    if (status === 'delivered') return 'Delivered successfully';
+    if (status === 'in_transit') return 'En route to destination';
+    if (status === 'assigned') return 'Drone assigned, preparing for pickup';
+    return 'Processing your request';
+  };
+
+  const generateTimeline = (delivery: any) => {
+    const timeline = [
+      { 
+        time: new Date(delivery.created_at).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }), 
+        status: 'Order Received', 
+        completed: true, 
+        description: 'Emergency request submitted' 
+      }
+    ];
+
+    if (delivery.status !== 'pending') {
+      timeline.push({
+        time: new Date(new Date(delivery.created_at).getTime() + 2 * 60000).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
+        status: 'Drone Dispatched',
+        completed: true,
+        description: 'Drone assigned and launched'
+      });
+    }
+
+    if (delivery.status === 'in_transit' || delivery.status === 'delivered') {
+      timeline.push({
+        time: new Date(new Date(delivery.created_at).getTime() + 5 * 60000).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
+        status: 'Package Collected',
+        completed: true,
+        description: 'Package secured and verified'
+      });
+
+      timeline.push({
+        time: new Date(new Date(delivery.created_at).getTime() + 8 * 60000).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
+        status: 'In Transit',
+        completed: delivery.status === 'delivered',
+        description: delivery.status === 'in_transit' ? 'Currently flying to destination' : 'Completed transit',
+        active: delivery.status === 'in_transit'
+      });
+    }
+
+    timeline.push({
+      time: new Date(delivery.estimated_delivery).toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' }),
+      status: 'Delivery',
+      completed: delivery.status === 'delivered',
+      description: delivery.status === 'delivered' ? 'Successfully delivered' : 'Expected delivery time'
+    });
+
+    return timeline;
   };
 
   const getStatusColor = (status: string) => {
@@ -81,8 +163,8 @@ const TrackParcel: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       {/* Search Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Track Your Parcel</h1>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 dark:bg-black dark:border-gray-800">
+        <h1 className="text-2xl font-bold text-gray-900 mb-6 dark:text-white">Track Your Parcel</h1>
         
         <div className="flex space-x-4">
           <div className="flex-1">
@@ -91,15 +173,15 @@ const TrackParcel: React.FC = () => {
               value={trackingId}
               onChange={(e) => setTrackingId(e.target.value)}
               placeholder="Enter tracking ID (e.g., SP-123456)"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-700 dark:text-white"
             />
           </div>
           <button
             onClick={handleTrack}
-            disabled={!trackingId || isLoading}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center"
+            disabled={!trackingId || loading}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center dark:bg-blue-700 dark:hover:bg-blue-800 dark:disabled:bg-gray-700"
           >
-            {isLoading ? (
+            {loading ? (
               <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
             ) : (
               <>
@@ -111,18 +193,18 @@ const TrackParcel: React.FC = () => {
         </div>
 
         {/* Sample IDs */}
-        <div className="mt-4 text-sm text-gray-600">
+        <div className="mt-4 text-sm text-gray-600 dark:text-gray-300">
           <p>Try these sample tracking IDs:</p>
           <div className="flex space-x-4 mt-2">
             <button
               onClick={() => setTrackingId('SP-123456')}
-              className="text-blue-600 hover:text-blue-800 underline"
+              className="text-blue-600 hover:text-blue-800 underline dark:text-blue-400 dark:hover:text-blue-300"
             >
               SP-123456 (In Transit)
             </button>
             <button
               onClick={() => setTrackingId('SP-789012')}
-              className="text-blue-600 hover:text-blue-800 underline"
+              className="text-blue-600 hover:text-blue-800 underline dark:text-blue-400 dark:hover:text-blue-300"
             >
               SP-789012 (Delivered)
             </button>
@@ -134,14 +216,14 @@ const TrackParcel: React.FC = () => {
       {trackingData && (
         <div className="space-y-6">
           {/* Status Overview */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 dark:bg-black dark:border-gray-800">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-gray-900">Tracking: {trackingData.id}</h2>
+              <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Tracking: {trackingData.id}</h2>
               <div className="flex space-x-2">
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(trackingData.status)}`}>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(trackingData.status)} dark:text-white`}>
                   {trackingData.status.charAt(0).toUpperCase() + trackingData.status.slice(1)}
                 </span>
-                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getUrgencyColor(trackingData.urgency)}`}>
+                <span className={`px-3 py-1 rounded-full text-sm font-medium ${getUrgencyColor(trackingData.urgency)} dark:text-white`}>
                   {trackingData.urgency.charAt(0).toUpperCase() + trackingData.urgency.slice(1)} Priority
                 </span>
               </div>
@@ -149,114 +231,101 @@ const TrackParcel: React.FC = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <h3 className="font-medium text-gray-900 mb-3">Parcel Information</h3>
+                <h3 className="font-medium text-gray-900 mb-3 dark:text-white">Parcel Information</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center">
-                    <Package className="w-4 h-4 text-gray-500 mr-2" />
-                    <span className="text-gray-600">Type:</span>
-                    <span className="ml-2 font-medium">{trackingData.type}</span>
+                    <Package className="w-4 h-4 text-gray-500 mr-2 dark:text-gray-300" />
+                    <span className="text-gray-600 dark:text-gray-300">Type:</span>
+                    <span className="ml-2 font-medium dark:text-white">{trackingData.type}</span>
                   </div>
                   <div className="flex items-center">
-                    <Plane className="w-4 h-4 text-gray-500 mr-2" />
-                    <span className="text-gray-600">Drone:</span>
-                    <span className="ml-2 font-medium">{trackingData.droneId}</span>
+                    <Plane className="w-4 h-4 text-gray-500 mr-2 dark:text-gray-300" />
+                    <span className="text-gray-600 dark:text-gray-300">Drone:</span>
+                    <span className="ml-2 font-medium dark:text-white">{trackingData.droneId}</span>
                   </div>
                   <div className="flex items-center">
-                    <Clock className="w-4 h-4 text-gray-500 mr-2" />
-                    <span className="text-gray-600">ETA:</span>
-                    <span className="ml-2 font-medium">{trackingData.estimatedDelivery}</span>
+                    <Clock className="w-4 h-4 text-gray-500 mr-2 dark:text-gray-300" />
+                    <span className="text-gray-600 dark:text-gray-300">ETA:</span>
+                    <span className="ml-2 font-medium dark:text-white">{trackingData.estimatedDelivery}</span>
                   </div>
                 </div>
               </div>
 
               <div>
-                <h3 className="font-medium text-gray-900 mb-3">Delivery Details</h3>
+                <h3 className="font-medium text-gray-900 mb-3 dark:text-white">Delivery Details</h3>
                 <div className="space-y-2 text-sm">
                   <div>
-                    <span className="text-gray-600">From:</span>
-                    <p className="font-medium">{trackingData.from}</p>
+                    <span className="text-gray-600 dark:text-gray-300">From:</span>
+                    <p className="font-medium dark:text-white">{trackingData.from}</p>
                   </div>
                   <div>
-                    <span className="text-gray-600">To:</span>
-                    <p className="font-medium">{trackingData.to}</p>
+                    <span className="text-gray-600 dark:text-gray-300">To:</span>
+                    <p className="font-medium dark:text-white">{trackingData.to}</p>
                   </div>
                   <div>
-                    <span className="text-gray-600">Recipient:</span>
-                    <p className="font-medium">{trackingData.recipient}</p>
+                    <span className="text-gray-600 dark:text-gray-300">Recipient:</span>
+                    <p className="font-medium dark:text-white">{trackingData.recipient}</p>
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Current Status */}
-            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg dark:bg-blue-900 dark:border-blue-800">
               <div className="flex items-center">
-                <MapPin className="w-5 h-5 text-blue-600 mr-2" />
-                <span className="font-medium text-blue-900">Current Status:</span>
-                <span className="ml-2 text-blue-700">{trackingData.currentLocation}</span>
+                <MapPin className="w-5 h-5 text-blue-600 mr-2 dark:text-blue-400" />
+                <span className="font-medium text-blue-900 dark:text-blue-100">Current Status:</span>
+                <span className="ml-2 text-blue-700 dark:text-blue-300">{trackingData.currentLocation}</span>
               </div>
             </div>
           </div>
 
-          {/* Live Map Simulation */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Live Tracking</h3>
-            <div className="h-64 bg-gradient-to-br from-blue-50 to-green-50 rounded-lg border-2 border-gray-200 relative overflow-hidden">
-              {/* Simulated Map */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="bg-blue-600 p-3 rounded-full w-12 h-12 mx-auto mb-4 animate-pulse">
-                    <Plane className="w-6 h-6 text-white" />
-                  </div>
-                  <p className="text-gray-600">Drone {trackingData.droneId} is en route</p>
-                  <p className="text-sm text-gray-500 mt-1">{trackingData.currentLocation}</p>
-                </div>
-              </div>
-              
-              {/* Route Line */}
-              <svg className="absolute inset-0 w-full h-full">
-                <path
-                  d="M50 200 Q150 100 250 150"
-                  stroke="#3B82F6"
-                  strokeWidth="3"
-                  strokeDasharray="10,5"
-                  fill="none"
-                  className="animate-pulse"
-                />
-              </svg>
-            </div>
-          </div>
+          {/* Live Map */}
+          <MapView 
+            routes={[{
+              id: trackingData.id,
+              from: { lat: 28.6139, lng: 77.2090, name: trackingData.from.split(',')[0] },
+              to: { lat: 28.6219, lng: 77.2285, name: trackingData.to.split(',')[0] },
+              status: trackingData.status as 'pending' | 'in-transit' | 'delivered',
+              estimatedTime: trackingData.estimatedDelivery,
+              droneId: trackingData.droneId,
+              parcelType: trackingData.type
+            }]}
+            selectedRoute={trackingData.id}
+            showDrones={true}
+            height="350px"
+          />
 
           {/* Timeline */}
-          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Delivery Timeline</h3>
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 dark:bg-black dark:border-gray-800">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4 dark:text-white">Delivery Timeline</h3>
             <div className="space-y-4">
               {trackingData.timeline.map((event: any, index: number) => (
                 <div key={index} className="flex items-start space-x-4">
                   <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                    event.completed 
-                      ? event.active 
-                        ? 'bg-blue-600 animate-pulse' 
+                    event.completed
+                      ? event.active
+                        ? 'bg-blue-600 animate-pulse'
                         : 'bg-green-600'
-                      : 'bg-gray-300'
+                      : 'bg-gray-300 dark:bg-gray-700'
                   }`}>
                     {event.completed ? (
                       <CheckCircle className="w-4 h-4 text-white" />
                     ) : (
-                      <Clock className="w-4 h-4 text-gray-600" />
+                      <Clock className="w-4 h-4 text-gray-600 dark:text-gray-300" />
                     )}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between">
                       <h4 className={`font-medium ${
-                        event.completed ? 'text-gray-900' : 'text-gray-500'
+                        event.completed ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-gray-400'
                       }`}>
                         {event.status}
                       </h4>
-                      <span className="text-sm text-gray-500">{event.time}</span>
+                      <span className="text-sm text-gray-500 dark:text-gray-400">{event.time}</span>
                     </div>
                     <p className={`text-sm ${
-                      event.completed ? 'text-gray-600' : 'text-gray-400'
+                      event.completed ? 'text-gray-600 dark:text-gray-300' : 'text-gray-400 dark:text-gray-500'
                     }`}>
                       {event.description}
                     </p>
@@ -267,17 +336,17 @@ const TrackParcel: React.FC = () => {
           </div>
 
           {/* Contact Support */}
-          <div className="bg-gray-50 rounded-xl border border-gray-200 p-6">
+          <div className="bg-gray-50 rounded-xl border border-gray-200 p-6 dark:bg-gray-900 dark:border-gray-800">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-medium text-gray-900">Need Help?</h3>
-                <p className="text-sm text-gray-600">Contact our 24/7 support team</p>
+                <h3 className="font-medium text-gray-900 dark:text-white">Need Help?</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Contact our 24/7 support team</p>
               </div>
               <div className="flex space-x-3">
-                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors dark:bg-blue-700 dark:hover:bg-blue-800">
                   Live Chat
                 </button>
-                <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors">
+                <button className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600">
                   Call Support
                 </button>
               </div>
@@ -287,17 +356,17 @@ const TrackParcel: React.FC = () => {
       )}
 
       {/* No Results */}
-      {trackingId && !trackingData && !isLoading && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center">
-          <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-medium text-gray-900 mb-2">Tracking ID Not Found</h3>
-          <p className="text-gray-600 mb-4">
-            We couldn't find a parcel with tracking ID "{trackingId}". 
+      {trackingId && !trackingData && !loading && error && (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 text-center dark:bg-black dark:border-gray-800">
+          <Package className="w-12 h-12 text-gray-400 mx-auto mb-4 dark:text-gray-300" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2 dark:text-white">Tracking ID Not Found</h3>
+          <p className="text-gray-600 mb-4 dark:text-gray-300">
+            We couldn't find a parcel with tracking ID "{trackingId}".
             Please check the ID and try again.
           </p>
           <button
             onClick={() => {setTrackingId(''); setTrackingData(null);}}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors dark:bg-blue-700 dark:hover:bg-blue-800"
           >
             Try Again
           </button>

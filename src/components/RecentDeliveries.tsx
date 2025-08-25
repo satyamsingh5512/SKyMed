@@ -73,43 +73,43 @@ const RecentDeliveries: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900">Recent Deliveries</h2>
-        <button className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+    <div className="bg-white rounded-lg shadow border border-gray-200 p-4 dark:bg-gray-900 dark:border-gray-800">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-sm font-semibold text-gray-900 dark:text-white">Recent Deliveries</h2>
+        <button className="text-xs text-blue-600 hover:text-blue-800 font-medium dark:text-blue-400 dark:hover:text-blue-300">
           View All
         </button>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {deliveries.map((delivery) => {
           const StatusIcon = getStatusIcon(delivery.status);
           return (
-            <div key={delivery.id} className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-              <div className={`p-2 rounded-full ${getStatusColor(delivery.status)}`}>
-                <StatusIcon className="w-4 h-4" />
+            <div key={delivery.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+              <div className={`p-1.5 rounded-full ${getStatusColor(delivery.status)}`}>
+                <StatusIcon className="w-3.5 h-3.5" />
               </div>
               
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-1">
-                  <p className="font-medium text-gray-900 truncate">{delivery.type}</p>
-                  <span className="text-xs text-gray-500">{delivery.time}</span>
+                  <p className="text-sm font-medium text-gray-900 truncate dark:text-white">{delivery.type}</p>
+                  <span className="text-xs text-gray-500 dark:text-gray-300">{delivery.time}</span>
                 </div>
                 
-                <div className="flex items-center space-x-4 text-sm text-gray-600">
+                <div className="flex items-center space-x-3 text-xs text-gray-600 dark:text-gray-300">
                   <div className="flex items-center">
-                    <MapPin className="w-3 h-3 mr-1" />
+                    <MapPin className="w-2.5 h-2.5 mr-1 dark:text-gray-300" />
                     <span className="truncate">{delivery.from} → {delivery.to}</span>
                   </div>
                   <div className="flex items-center">
-                    <Thermometer className="w-3 h-3 mr-1" />
+                    <Thermometer className="w-2.5 h-2.5 mr-1 dark:text-gray-300" />
                     <span>{delivery.temperature}</span>
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between mt-2">
-                  <span className="text-xs text-gray-500">Drone: {delivery.drone}</span>
-                  <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(delivery.status)}`}>
+                <div className="flex items-center justify-between mt-1.5">
+                  <span className="text-xs text-gray-500 dark:text-gray-300">Drone: {delivery.drone}</span>
+                  <span className={`text-xs px-1.5 py-0.5 rounded-full ${getStatusColor(delivery.status)}`}>
                     {delivery.status.charAt(0).toUpperCase() + delivery.status.slice(1)}
                   </span>
                 </div>

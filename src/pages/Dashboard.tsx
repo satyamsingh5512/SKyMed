@@ -61,24 +61,24 @@ const Dashboard: React.FC = () => {
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Mission Control Dashboard</h1>
-          <p className="text-gray-600">Real-time emergency response network monitoring</p>
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">Mission Control Dashboard</h1>
+          <p className="text-sm text-gray-600 dark:text-gray-300">Real-time emergency response network monitoring</p>
         </div>
         <div className="text-right">
-          <p className="text-sm text-gray-500">Current Time</p>
-          <p className="text-lg font-mono text-gray-900">{currentTime.toLocaleTimeString()}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-300">Current Time</p>
+          <p className="text-base font-mono text-gray-900 dark:text-white">{currentTime.toLocaleTimeString()}</p>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((stat, index) => (
           <StatCard key={index} {...stat} />
         ))}
       </div>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Live Map */}
         <div className="lg:col-span-1">
           <LiveMap />
@@ -91,7 +91,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Bottom Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Recent Deliveries */}
         <RecentDeliveries />
 

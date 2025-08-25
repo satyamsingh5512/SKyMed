@@ -30,30 +30,30 @@ const SystemStatus: React.FC = () => {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900">System Health</h2>
-        <div className="flex items-center space-x-2 text-green-600">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="text-sm font-medium">All Systems Operational</span>
+    <div className="bg-white rounded-lg shadow border border-gray-200 p-4 dark:bg-gray-900 dark:border-gray-800">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-sm font-semibold text-gray-900 dark:text-white">System Health</h2>
+        <div className="flex items-center space-x-1 text-green-600 dark:text-green-400">
+          <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="text-xs font-medium dark:text-white">All Systems Operational</span>
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3">
         {systemComponents.map((component, index) => {
           const StatusIcon = getStatusIcon(component.status);
           return (
-            <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-              <div className="flex items-center space-x-3">
-                <StatusIcon className={`w-5 h-5 ${getStatusColor(component.status)}`} />
+            <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-md dark:bg-gray-800 dark:border-gray-700">
+              <div className="flex items-center space-x-2">
+                <StatusIcon className={`w-4 h-4 ${getStatusColor(component.status)} dark:text-white`} />
                 <div>
-                  <p className="font-medium text-gray-900">{component.name}</p>
-                  <p className="text-sm text-gray-500 capitalize">{component.status}</p>
+                  <p className="text-sm font-medium text-gray-900 dark:text-white">{component.name}</p>
+                  <p className="text-xs text-gray-500 capitalize dark:text-gray-300">{component.status}</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-sm font-medium text-gray-900">{component.uptime}</p>
-                <p className="text-xs text-gray-500">Uptime</p>
+                <p className="text-xs font-medium text-gray-900 dark:text-white">{component.uptime}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-300">Uptime</p>
               </div>
             </div>
           );
@@ -61,21 +61,21 @@ const SystemStatus: React.FC = () => {
       </div>
 
       {/* Quick Stats */}
-      <div className="mt-6 grid grid-cols-3 gap-4">
-        <div className="text-center p-3 bg-blue-50 rounded-lg">
-          <Wifi className="w-6 h-6 text-blue-600 mx-auto mb-2" />
-          <p className="text-sm font-medium text-gray-900">Network</p>
-          <p className="text-xs text-gray-600">Strong Signal</p>
+      <div className="mt-4 grid grid-cols-3 gap-2">
+        <div className="text-center p-2 bg-blue-50 rounded-md dark:bg-gray-800">
+          <Wifi className="w-4 h-4 text-blue-600 mx-auto mb-1 dark:text-blue-400" />
+          <p className="text-xs font-medium text-gray-900 dark:text-white">Network</p>
+          <p className="text-xs text-gray-600 dark:text-gray-300">Strong</p>
         </div>
-        <div className="text-center p-3 bg-green-50 rounded-lg">
-          <Battery className="w-6 h-6 text-green-600 mx-auto mb-2" />
-          <p className="text-sm font-medium text-gray-900">Power</p>
-          <p className="text-xs text-gray-600">98% Avg</p>
+        <div className="text-center p-2 bg-green-50 rounded-md dark:bg-gray-800">
+          <Battery className="w-4 h-4 text-green-600 mx-auto mb-1 dark:text-green-400" />
+          <p className="text-xs font-medium text-gray-900 dark:text-white">Power</p>
+          <p className="text-xs text-gray-600 dark:text-gray-300">98%</p>
         </div>
-        <div className="text-center p-3 bg-purple-50 rounded-lg">
-          <Thermometer className="w-6 h-6 text-purple-600 mx-auto mb-2" />
-          <p className="text-sm font-medium text-gray-900">Temp</p>
-          <p className="text-xs text-gray-600">Optimal</p>
+        <div className="text-center p-2 bg-purple-50 rounded-md dark:bg-gray-800">
+          <Thermometer className="w-4 h-4 text-purple-600 mx-auto mb-1 dark:text-purple-400" />
+          <p className="text-xs font-medium text-gray-900 dark:text-white">Temp</p>
+          <p className="text-xs text-gray-600 dark:text-gray-300">Optimal</p>
         </div>
       </div>
     </div>

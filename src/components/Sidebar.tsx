@@ -33,21 +33,21 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
     <>
       {/* Mobile backdrop */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
           onClick={onClose}
         />
       )}
       
       <aside className={`
-        fixed left-0 top-16 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50
+        fixed left-0 top-16 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-50 dark:bg-black dark:border-r dark:border-gray-800
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0
       `}>
         <div className="p-4">
-          <button 
+          <button
             onClick={onClose}
-            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 lg:hidden"
+            className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 lg:hidden dark:text-gray-300 dark:hover:text-white"
           >
             <X className="w-5 h-5" />
           </button>
@@ -64,14 +64,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose }) => {
                   onClick={onClose}
                   className={`
                     flex items-center space-x-3 px-4 py-3 mb-2 rounded-lg transition-colors
-                    ${isActive 
-                      ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700' 
-                      : 'text-gray-700 hover:bg-gray-50'
+                    ${isActive
+                      ? 'bg-blue-50 text-blue-700 border-r-4 border-blue-700 dark:bg-blue-900 dark:text-blue-200 dark:border-blue-400'
+                      : 'text-gray-700 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-gray-800'
                     }
                   `}
                 >
-                  <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.label}</span>
+                  <Icon className="w-5 h-5 dark:text-white" />
+                  <span className="font-medium dark:text-white">{item.label}</span>
                 </Link>
               );
             })}
