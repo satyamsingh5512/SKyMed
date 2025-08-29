@@ -1,4 +1,4 @@
--- SkyMed Emergency Delivery System Database Schema
+-- AeroVita Emergency Delivery System Database Schema
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -104,21 +104,21 @@ CREATE TRIGGER update_deliveries_updated_at BEFORE UPDATE ON deliveries FOR EACH
 
 -- Insert sample data
 INSERT INTO users (email, full_name, phone, address, user_type) VALUES
-('admin@skymed.com', 'Admin User', '+91-9876543210', 'SkyMed HQ, Mumbai, India', 'admin'),
-('operator@skymed.com', 'Operations Manager', '+91-9876543211', 'Control Center, Delhi, India', 'operator'),
+('admin@aerovita.com', 'Admin User', '+91-9876543210', 'AeroVita HQ, Mumbai, India', 'admin'),
+('operator@aerovita.com', 'Operations Manager', '+91-9876543211', 'Control Center, Delhi, India', 'operator'),
 ('user1@example.com', 'Dr. Priya Sharma', '+91-9876543212', 'Apollo Hospital, Bangalore, India', 'user'),
 ('user2@example.com', 'Dr. Rajesh Kumar', '+91-9876543213', 'AIIMS, New Delhi, India', 'user');
 
 INSERT INTO drones (name, model, status, battery_level, current_location, max_payload, flight_time_remaining) VALUES
-('SkyMed-01', 'MedDrone Pro X1', 'available', 95, '{"lat": 19.0760, "lng": 72.8777}', 5.0, 45),
-('SkyMed-02', 'MedDrone Pro X1', 'in_flight', 78, '{"lat": 28.6139, "lng": 77.2090}', 5.0, 32),
-('SkyMed-03', 'MedDrone Pro X2', 'available', 100, '{"lat": 12.9716, "lng": 77.5946}', 8.0, 60),
-('SkyMed-04', 'MedDrone Pro X1', 'maintenance', 0, '{"lat": 19.0760, "lng": 72.8777}', 5.0, 0),
-('SkyMed-05', 'MedDrone Pro X2', 'available', 88, '{"lat": 13.0827, "lng": 80.2707}', 8.0, 55);
+('AeroVita-01', 'MedDrone Pro X1', 'available', 95, '{"lat": 19.0760, "lng": 72.8777}', 5.0, 45),
+('AeroVita-02', 'MedDrone Pro X1', 'in_flight', 78, '{"lat": 28.6139, "lng": 77.2090}', 5.0, 32),
+('AeroVita-03', 'MedDrone Pro X2', 'available', 100, '{"lat": 12.9716, "lng": 77.5946}', 8.0, 60),
+('AeroVita-04', 'MedDrone Pro X1', 'maintenance', 0, '{"lat": 19.0760, "lng": 72.8777}', 5.0, 0),
+('AeroVita-05', 'MedDrone Pro X2', 'available', 88, '{"lat": 13.0827, "lng": 80.2707}', 8.0, 55);
 
 INSERT INTO deliveries (user_id, recipient_name, recipient_phone, pickup_address, delivery_address, package_type, weight, priority, status, drone_id, estimated_delivery, cost) VALUES
-((SELECT id FROM users WHERE email = 'user1@example.com'), 'Emergency Ward', '+91-9876543220', 'Central Medical Store, Mumbai', 'Emergency Ward, Lilavati Hospital, Mumbai', 'Emergency Medicine Kit', 2.5, 'emergency', 'in_transit', (SELECT id FROM drones WHERE name = 'SkyMed-02'), NOW() + INTERVAL '15 minutes', 2410.00),
-((SELECT id FROM users WHERE email = 'user2@example.com'), 'ICU Department', '+91-9876543221', 'Pharma Depot, Delhi', 'ICU, AIIMS Delhi', 'Blood Samples', 1.2, 'high', 'assigned', (SELECT id FROM drones WHERE name = 'SkyMed-01'), NOW() + INTERVAL '20 minutes', 1850.00),
+((SELECT id FROM users WHERE email = 'user1@example.com'), 'Emergency Ward', '+91-9876543220', 'Central Medical Store, Mumbai', 'Emergency Ward, Lilavati Hospital, Mumbai', 'Emergency Medicine Kit', 2.5, 'emergency', 'in_transit', (SELECT id FROM drones WHERE name = 'AeroVita-02'), NOW() + INTERVAL '15 minutes', 2410.00),
+((SELECT id FROM users WHERE email = 'user2@example.com'), 'ICU Department', '+91-9876543221', 'Pharma Depot, Delhi', 'ICU, AIIMS Delhi', 'Blood Samples', 1.2, 'high', 'assigned', (SELECT id FROM drones WHERE name = 'AeroVita-01'), NOW() + INTERVAL '20 minutes', 1850.00),
 ((SELECT id FROM users WHERE email = 'user1@example.com'), 'Cardiology Unit', '+91-9876543222', 'Medical Supply Center, Bangalore', 'Cardiology, Manipal Hospital, Bangalore', 'Cardiac Medications', 0.8, 'medium', 'pending', NULL, NOW() + INTERVAL '30 minutes', 1480.00);
 
 -- Insert sample tracking data

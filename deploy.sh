@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# SkyMed Deployment Script
-echo "🚀 SkyMed Emergency Delivery System - Deployment Script"
+# eroVita Deployment Script
+echo "🚀 eroVita Emergency Delivery System - Deployment Script"
 echo "=================================================="
 
 # Check if we're in a git repository
@@ -34,7 +34,7 @@ fi
 if ! git remote get-url origin > /dev/null 2>&1; then
     echo "⚠️  No remote origin found."
     echo "Please add your GitHub repository:"
-    echo "git remote add origin https://github.com/yourusername/skymed-app.git"
+    echo "git remote add origin https://github.com/yourusername/erovita-app.git"
     exit 1
 fi
 

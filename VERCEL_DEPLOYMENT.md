@@ -1,6 +1,6 @@
-# 🚀 SkyMed Vercel Deployment Guide
+# 🚀 AeroVita Vercel Deployment Guide
 
-Complete guide to deploy your SkyMed Emergency Delivery System to Vercel with optimal performance and security.
+Complete guide to deploy your AeroVita Emergency Delivery System to Vercel with optimal performance and security.
 
 ## 📋 Pre-Deployment Checklist
 
@@ -39,7 +39,7 @@ Add these in your Vercel dashboard (Settings → Environment Variables):
 ```env
 VITE_SUPABASE_URL=https://shalookoiycpttkatrlr.supabase.co
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
-VITE_APP_NAME=SkyMed
+VITE_APP_NAME=AeroVita
 VITE_APP_VERSION=1.0.0
 VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key_here
 ```
@@ -47,7 +47,7 @@ VITE_GOOGLE_MAPS_API_KEY=your_google_maps_key_here
 ## 📁 Project Structure (Vercel Optimized)
 
 ```
-skymed/
+aerovita/
 ├── api/                    # Serverless functions
 │   ├── health.js          # Health check endpoint
 │   ├── demo-data.js       # Demo data endpoint
@@ -196,14 +196,14 @@ fetch('/api/health')
 
 ### Add Custom Domain
 1. Go to Vercel dashboard → Settings → Domains
-2. Add your domain (e.g., `skymed.yourdomain.com`)
+2. Add your domain (e.g., `aerovita.yourdomain.com`)
 3. Configure DNS records as shown
 4. SSL certificate auto-generated
 
 ### DNS Configuration
 ```
 Type: CNAME
-Name: skymed
+Name: aerovita
 Value: cname.vercel-dns.com
 ```
 
@@ -276,7 +276,7 @@ npm run preview
 
 ### Community
 - [Vercel Discord](https://vercel.com/discord)
-- [GitHub Issues](https://github.com/satyamsingh5512/SKyMed/issues)
+- [GitHub Issues](https://github.com/satyamsingh5512/AeroVita/issues)
 
 ## 🎯 Next Steps After Deployment
 
@@ -299,7 +299,7 @@ Your deployment is successful when:
 
 ## 🚁 Ready for Takeoff!
 
-Your SkyMed Emergency Delivery System is now optimized for Vercel deployment with:
+Your AeroVita Emergency Delivery System is now optimized for Vercel deployment with:
 
 - **Enterprise-grade performance** with global CDN
 - **Automatic scaling** based on demand

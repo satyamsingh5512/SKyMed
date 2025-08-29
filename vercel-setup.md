@@ -1,4 +1,4 @@
-# Vercel Deployment Setup for SkyMed
+# Vercel Deployment Setup for AeroVita
 
 ## 🚀 Quick Deployment Steps
 
@@ -8,7 +8,7 @@ Add these environment variables in your Vercel dashboard:
 ```env
 VITE_SUPABASE_URL=https://shalookoiycpttkatrlr.supabase.co
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
-VITE_APP_NAME=SkyMed
+VITE_APP_NAME=AeroVita
 VITE_APP_VERSION=1.0.0
 ```
 
@@ -94,4 +94,4 @@ Monitor your deployment:
 4. Set up custom domain (optional)
 5. Configure monitoring and alerts
 
-Your SkyMed Emergency Delivery System is now optimized for Vercel! 🚁✨
+Your AeroVita Emergency Delivery System is now optimized for Vercel! 🚁✨

@@ -3,7 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, User, Bell, Sun, Moon, LogOut, Settings } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
-import SkyMedLogo from './SkyMedLogo';
+import AeroVitaLogo from './AeroVitaLogo';
+import LogoutConfirmDialog from './LogoutConfirmDialog';
 
 const UserHeader: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,13 +13,34 @@ const UserHeader: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const { user, signOut } = useAuth();
 
-  const handleSignOut = async () => {
-    await signOut();
+  const [showLogoutDialog, setShowLogoutDialog] = useState(false);
+  const [isSigningOut, setIsSigningOut] = useState(false);
+
+  const handleLogoutClick = () => {
     setIsUserMenuOpen(false);
+    setShowLogoutDialog(true);
+  };
+
+  const handleLogoutConfirm = async () => {
+    try {
+      setIsSigningOut(true);
+      console.log('Initiating logout...');
+      await signOut();
+    } catch (error) {
+      console.error('Logout error:', error);
+      setIsSigningOut(false);
+      // Force redirect even on error
+      window.location.href = '/';
+    }
+  };
+
+  const handleLogoutCancel = () => {
+    setShowLogoutDialog(false);
+    setIsSigningOut(false);
   };
 
   const navigation = [
-    { name: 'Dashboard', href: '/', icon: '🏠' },
+    { name: 'Dashboard', href: '/dashboard', icon: '🏠' },
     { name: 'Send Parcel', href: '/send', icon: '📦' },
     { name: 'Track Parcel', href: '/track', icon: '📍' },
     { name: 'Order History', href: '/history', icon: '📋' },
@@ -34,11 +56,11 @@ const UserHeader: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <SkyMedLogo size="md" />
+          <Link to="/dashboard" className="flex items-center space-x-3">
+            <AeroVitaLogo size="md" />
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">SkyMed</h1>
-              <p className="text-xs text-gray-600 dark:text-gray-300">Emergency Delivery</p>
+              <h1 className="text-xl font-bold text-gray-900 dark:text-white">AeroVita</h1>
+              <p className="text-xs text-gray-600 dark:text-gray-300">Delivering Life, Anytime, Anywhere</p>
             </div>
           </Link>
 
@@ -112,7 +134,7 @@ const UserHeader: React.FC = () => {
                     Profile Settings
                   </Link>
                   <button
-                    onClick={handleSignOut}
+                    onClick={handleLogoutClick}
                     className="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
                   >
                     <LogOut className="w-4 h-4 mr-2" />
@@ -176,6 +198,14 @@ const UserHeader: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* Logout Confirmation Dialog */}
+      <LogoutConfirmDialog
+        isOpen={showLogoutDialog}
+        onClose={handleLogoutCancel}
+        onConfirm={handleLogoutConfirm}
+        isLoading={isSigningOut}
+      />
     </header>
   );
 };

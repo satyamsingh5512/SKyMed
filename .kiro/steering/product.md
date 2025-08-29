@@ -1,6 +1,6 @@
 # Product Overview
 
-SKyMed is an emergency medical drone delivery system that provides real-time monitoring and management of medical supply deliveries via autonomous drones.
+AeroVita is an emergency medical drone delivery system that provides real-time monitoring and management of medical supply deliveries via autonomous drones.
 
 ## Core Features
 - **Parcel Management**: Send and track medical parcels through drone delivery

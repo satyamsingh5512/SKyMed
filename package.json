@@ -1,5 +1,5 @@
 {
-  "name": "vite-react-typescript-starter",
+  "name": "aerovita-emergency-delivery",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -46,12 +46,12 @@
   "main": "eslint.config.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/satyamsingh5512/SKyMed.git"
+    "url": "git+https://github.com/satyamsingh5512/AeroVita.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/satyamsingh5512/SKyMed/issues"
+    "url": "https://github.com/satyamsingh5512/AeroVita/issues"
   },
-  "homepage": "https://github.com/satyamsingh5512/SKyMed#readme"
+  "homepage": "https://github.com/satyamsingh5512/AeroVita#readme"
 }

@@ -5,7 +5,7 @@ const FleetManagement: React.FC = () => {
   const [drones, setDrones] = useState([
     {
       id: 'DR-001',
-      model: 'SkyMed Pro X1',
+      model: 'AeroVita Pro X1',
       status: 'active',
       battery: 87,
       location: 'Downtown Medical',
@@ -17,7 +17,7 @@ const FleetManagement: React.FC = () => {
     },
     {
       id: 'DR-002',
-      model: 'SkyMed Pro X1',
+      model: 'AeroVita Pro X1',
       status: 'charging',
       battery: 45,
       location: 'Base Station Alpha',
@@ -29,7 +29,7 @@ const FleetManagement: React.FC = () => {
     },
     {
       id: 'DR-003',
-      model: 'SkyMed Heavy X2',
+      model: 'AeroVita Heavy X2',
       status: 'maintenance',
       battery: 0,
       location: 'Maintenance Bay',
@@ -41,7 +41,7 @@ const FleetManagement: React.FC = () => {
     },
     {
       id: 'DR-004',
-      model: 'SkyMed Lite L1',
+      model: 'AeroVita Lite L1',
       status: 'standby',
       battery: 100,
       location: 'Base Station Beta',

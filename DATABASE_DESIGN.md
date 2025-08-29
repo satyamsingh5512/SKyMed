@@ -1,4 +1,4 @@
-# SkyMed Database Design
+# eroVita Database Design
 
 ## Recommended Stack: PostgreSQL + Redis
 
@@ -228,7 +228,7 @@ docker-compose up -d postgres redis
 - Global Redis cache
 - CDN for static assets
 
-## Key Benefits for SkyMed
+## Key Benefits for eroVita
 
 1. **Medical Data Integrity** - PostgreSQL ACID compliance
 2. **Real-time Tracking** - Redis pub/sub for live updates

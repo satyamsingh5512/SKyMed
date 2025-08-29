@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase';
+import { dbService } from '../lib/supabase-enhanced';
 
 export const setupDatabase = async () => {
   try {
@@ -107,6 +108,81 @@ export const quickHealthCheck = async () => {
       healthy: false,
       timestamp: new Date().toISOString(),
       error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+};
+
+// Enhanced system health check
+export const comprehensiveHealthCheck = async () => {
+  try {
+    const systemHealth = await dbService.getSystemHealth();
+    
+    if (!systemHealth.success) {
+      return {
+        healthy: false,
+        timestamp: new Date().toISOString(),
+        error: 'System health check failed',
+        details: systemHealth.error
+      };
+    }
+
+    return {
+      healthy: true,
+      timestamp: new Date().toISOString(),
+      system_stats: systemHealth.data,
+      backend_version: '2.0.0-enhanced'
+    };
+  } catch (error) {
+    return {
+      healthy: false,
+      timestamp: new Date().toISOString(),
+      error: error instanceof Error ? error.message : 'Unknown error'
+    };
+  }
+};
+
+// Initialize enhanced backend features
+export const initializeEnhancedBackend = async () => {
+  try {
+    console.log('🚀 Initializing enhanced backend features...');
+
+    // Check if enhanced tables exist
+    const { data: tables, error } = await supabase
+      .from('information_schema.tables')
+      .select('table_name')
+      .eq('table_schema', 'public')
+      .in('table_name', ['user_activity', 'performance_metrics', 'notification_templates']);
+
+    if (error) {
+      return {
+        success: false,
+        message: 'Failed to check enhanced tables',
+        error
+      };
+    }
+
+    const enhancedTablesExist = tables && tables.length >= 3;
+
+    return {
+      success: true,
+      enhanced_features_available: enhancedTablesExist,
+      message: enhancedTablesExist ? 
+        'Enhanced backend features are available' : 
+        'Run supabase-enhanced-schema.sql to enable enhanced features',
+      recommendations: enhancedTablesExist ? [] : [
+        '1. Go to your Supabase project dashboard',
+        '2. Navigate to SQL Editor',
+        '3. Copy and paste the contents of supabase-enhanced-schema.sql',
+        '4. Click Run to execute the enhanced schema'
+      ]
+    };
+
+  } catch (error) {
+    console.error('Enhanced backend initialization error:', error);
+    return {
+      success: false,
+      message: 'Failed to initialize enhanced backend',
+      error
     };
   }
 };

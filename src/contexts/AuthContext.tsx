@@ -206,10 +206,58 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const signOut = async () => {
     try {
+      console.log('Signing out user...');
+      
+      const currentUser = user;
+      const currentSession = session;
+      
+      // Call logout API for activity tracking
+      if (currentUser) {
+        try {
+          await fetch('/api/auth/logout', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              user_id: currentUser.id,
+              session_token: currentSession?.access_token
+            })
+          });
+        } catch (apiError) {
+          console.log('Logout API call failed (non-critical):', apiError);
+        }
+      }
+      
+      // Clear local state immediately
+      setUser(null);
+      setSession(null);
+      setLoading(false);
+      
+      // Sign out from Supabase
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase sign out error:', error);
+        // Even if Supabase signout fails, we still want to clear local state
+      }
+      
+      // Clear any cached data
+      localStorage.removeItem('supabase.auth.token');
+      localStorage.removeItem('sb-' + supabaseUrl.split('//')[1].split('.')[0] + '-auth-token');
+      sessionStorage.clear();
+      
+      console.log('User signed out successfully');
+      
+      // Force redirect to homepage
+      window.location.href = '/';
+      
     } catch (error) {
       console.error('Sign out error:', error);
+      // Even on error, clear local state and redirect
+      setUser(null);
+      setSession(null);
+      setLoading(false);
+      window.location.href = '/';
     }
   };
 

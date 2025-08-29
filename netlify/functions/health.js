@@ -1,4 +1,4 @@
-// SkyMed Health Check API Endpoint
+// AeroVita Health Check API Endpoint
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -20,7 +20,7 @@ exports.handler = async (event, context) => {
     const response = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
-      service: 'SkyMed Emergency Delivery System',
+      service: 'AeroVita Emergency Delivery System',
       version: '1.0.0',
       environment: process.env.NODE_ENV || 'production',
       uptime: process.uptime(),

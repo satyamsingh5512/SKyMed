@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, AlertCircle, Loader, Shield, LogIn, X, ArrowRight, Zap, Globe, Heart, Cpu, Wifi, Plus, MapPin } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import SkyMedLogo from '../components/SkyMedLogo';
+import AeroVitaLogo from '../components/AeroVitaLogo';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -185,12 +185,12 @@ const Login: React.FC = () => {
           <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             {/* Logo */}
             <div className="flex justify-center mb-8">
-              <SkyMedLogo size="xl" />
+              <AeroVitaLogo size="xl" />
             </div>
 
             {/* Hero Content */}
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              <span className="block animate-pulse">SkyMed</span>
+              <span className="block animate-pulse">AeroVita</span>
               <span className="block text-3xl md:text-4xl font-light text-blue-300 mt-2">
                 Autonomous Emergency Response Network
               </span>
@@ -293,59 +293,13 @@ const Login: React.FC = () => {
             <div className="p-8">
               <div className="text-center mb-8">
                 <div className="flex justify-center mb-4">
-                  <SkyMedLogo size="lg" />
+                  <AeroVitaLogo size="lg" />
                 </div>
                 <h2 className="text-3xl font-bold text-white">Welcome back</h2>
-                <p className="mt-2 text-gray-300">Sign in to your SkyMed account</p>
-                
-                {/* Demo Credentials */}
-                <div className="mt-4 p-3 bg-blue-900/20 rounded-lg border border-blue-800/50">
-                  <p className="text-xs text-blue-300 mb-2">Demo Credentials:</p>
-                  <div className="text-xs text-gray-300 space-y-1">
-                    <div>📧 admin@skymed.com | 🔑 admin123</div>
-                    <div>📧 doctor@skymed.com | 🔑 doctor123</div>
-                    <div>📧 nurse@skymed.com | 🔑 nurse123</div>
-                  </div>
-                </div>
+                <p className="mt-2 text-gray-300">Sign in to your AeroVita account</p>
               </div>
 
               <form className="space-y-6" onSubmit={handleSubmit}>
-                {/* Quick Login Buttons */}
-                <div className="mb-4">
-                  <p className="text-xs text-gray-400 mb-2">Quick Login:</p>
-                  <div className="flex flex-wrap gap-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setEmail('admin@skymed.com');
-                        setPassword('admin123');
-                      }}
-                      className="px-3 py-1 text-xs bg-red-600/20 text-red-300 rounded border border-red-600/30 hover:bg-red-600/30 transition-colors"
-                    >
-                      Admin
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setEmail('doctor@skymed.com');
-                        setPassword('doctor123');
-                      }}
-                      className="px-3 py-1 text-xs bg-blue-600/20 text-blue-300 rounded border border-blue-600/30 hover:bg-blue-600/30 transition-colors"
-                    >
-                      Doctor
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setEmail('nurse@skymed.com');
-                        setPassword('nurse123');
-                      }}
-                      className="px-3 py-1 text-xs bg-green-600/20 text-green-300 rounded border border-green-600/30 hover:bg-green-600/30 transition-colors"
-                    >
-                      Nurse
-                    </button>
-                  </div>
-                </div>
 
                 <div className="space-y-4">
                   <div>

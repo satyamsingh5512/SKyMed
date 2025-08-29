@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Package, Clock, CheckCircle, AlertTriangle, Plus, MapPin } from 'lucide-react';
 import MapView from '../components/MapView';
 import WelcomeModal from '../components/WelcomeModal';
-import DemoUserManager from '../components/DemoUserManager';
+
 import { useDeliveries } from '../hooks/useDeliveries';
 import { useAuthCallback } from '../hooks/useAuthCallback';
 
@@ -69,7 +69,7 @@ const UserDashboard: React.FC = () => {
       <div className="space-y-8">
       {/* Welcome Section */}
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">Welcome to SkyMed</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">Welcome to AeroVita</h1>
         <p className="text-base text-gray-600 mb-6 dark:text-gray-300">Emergency delivery service at your fingertips</p>
         
         <Link
@@ -201,8 +201,7 @@ const UserDashboard: React.FC = () => {
         />
       </div>
 
-      {/* Demo User Manager */}
-      <DemoUserManager />
+
 
       {/* Emergency Contact */}
       <div className="bg-red-50 border border-red-200 rounded-lg p-4 dark:bg-red-900 dark:border-red-800">

@@ -44,8 +44,8 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   if (!user && !forceSkipLoading) {
-    // Redirect to login page with return url
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    // Redirect to homepage with return url
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   // If we're forcing skip loading and no user, show the children anyway (for development)

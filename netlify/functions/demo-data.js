@@ -1,4 +1,4 @@
-// SkyMed Demo Data API Endpoint
+// AeroVita Demo Data API Endpoint
 exports.handler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -28,19 +28,19 @@ exports.handler = async (event, context) => {
     const demoData = {
       users: [
         {
-          email: 'admin@skymed.com',
+          email: 'admin@aerovita.com',
           role: 'Administrator',
-          name: 'SkyMed Administrator',
+          name: 'AeroVita Administrator',
           department: 'Administration'
         },
         {
-          email: 'doctor@skymed.com',
+          email: 'doctor@aerovita.com',
           role: 'Medical Professional',
           name: 'Dr. Arjun Patel',
           department: 'Emergency Medicine'
         },
         {
-          email: 'nurse@skymed.com',
+          email: 'nurse@aerovita.com',
           role: 'Medical Professional',
           name: 'Nurse Priya Sharma',
           department: 'Critical Care'

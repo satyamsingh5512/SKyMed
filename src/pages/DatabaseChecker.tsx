@@ -77,7 +77,7 @@ const DatabaseChecker: React.FC = () => {
         .from('drones')
         .upsert([
           {
-            name: 'SkyMed-01',
+            name: 'AeroVita-01',
             model: 'MedDrone Pro X1',
             status: 'available',
             battery_level: 95,
@@ -86,7 +86,7 @@ const DatabaseChecker: React.FC = () => {
             flight_time_remaining: 45
           },
           {
-            name: 'SkyMed-02',
+            name: 'AeroVita-02',
             model: 'MedDrone Pro X1',
             status: 'in_flight',
             battery_level: 78,

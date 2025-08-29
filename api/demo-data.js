@@ -17,18 +17,16 @@ export default async function handler(req, res) {
     const demoData = {
       users: [
         {
-          id: 'demo-user-1',
-          email: 'demo@skymed.com',
-          password: 'demo123',
-          name: 'Demo User',
+          id: 'sample-user-1',
+          email: 'user@example.com',
+          name: 'Sample User',
           role: 'user',
           created_at: new Date().toISOString()
         },
         {
-          id: 'demo-admin-1',
-          email: 'admin@skymed.com',
-          password: 'admin123',
-          name: 'Admin User',
+          id: 'sample-admin-1',
+          email: 'admin@example.com',
+          name: 'Sample Admin',
           role: 'admin',
           created_at: new Date().toISOString()
         }

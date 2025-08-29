@@ -4,7 +4,7 @@
 import fs from 'fs';
 import path from 'path';
 
-console.log('🔍 Verifying SkyMed deployment readiness...\n');
+console.log('🔍 Verifying AeroVita deployment readiness...\n');
 
 const checks = [];
 
@@ -90,7 +90,7 @@ try {
 // Check 5: Build output exists and is valid
 if (fs.existsSync('dist') && fs.existsSync('dist/index.html')) {
   const indexHtml = fs.readFileSync('dist/index.html', 'utf8');
-  if (indexHtml.includes('SkyMed') || indexHtml.includes('root')) {
+  if (indexHtml.includes('AeroVita') || indexHtml.includes('root')) {
     checks.push({ name: '✅ Build output is valid', status: 'pass' });
   } else {
     checks.push({ name: '❌ Build output seems invalid', status: 'fail' });
@@ -125,7 +125,7 @@ checks.forEach(check => {
 console.log(`\n📊 Summary: ${passed} passed, ${failed} failed\n`);
 
 if (failed === 0) {
-  console.log('🎉 All checks passed! Your SkyMed app is ready for Vercel deployment.');
+  console.log('🎉 All checks passed! Your AeroVita app is ready for Vercel deployment.');
   console.log('\n🚀 Next steps:');
   console.log('1. Run: ./deploy-vercel.sh');
   console.log('2. Or deploy via GitHub integration');
