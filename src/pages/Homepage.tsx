@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Shield, Zap, MapPin, Heart, Users, Clock } from 'lucide-react';
-import AeroVitaLogo from '../components/AeroVitaLogo';
+import SkyMedLogo from '../components/SkyMedLogo';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Homepage: React.FC = () => {
@@ -54,9 +54,9 @@ const Homepage: React.FC = () => {
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-3">
-              <AeroVitaLogo size="md" />
+              <SkyMedLogo size="md" />
               <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">AeroVita</h1>
+                <h1 className="text-xl font-bold text-gray-900 dark:text-white">SkyMed</h1>
                 <p className="text-xs text-gray-600 dark:text-gray-300">Delivering Life, Anytime, Anywhere</p>
               </div>
             </div>
@@ -145,7 +145,7 @@ const Homepage: React.FC = () => {
         <div className="container mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-              Why Choose AeroVita?
+              Why Choose SkyMed?
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
               Advanced drone technology meets emergency healthcare to save lives when every second counts.
@@ -177,7 +177,7 @@ const Homepage: React.FC = () => {
             Ready to Save Lives?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Join thousands of healthcare professionals using AeroVita for emergency medical deliveries.
+            Join thousands of healthcare professionals using SkyMed for emergency medical deliveries.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -205,8 +205,8 @@ const Homepage: React.FC = () => {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-3 mb-4">
-                <AeroVitaLogo size="sm" />
-                <span className="text-xl font-bold">AeroVita</span>
+                <SkyMedLogo size="sm" />
+                <span className="text-xl font-bold">SkyMed</span>
               </div>
               <p className="text-gray-400">
                 Emergency medical drone delivery service saving lives across the globe.
@@ -237,14 +237,20 @@ const Homepage: React.FC = () => {
               <h3 className="font-semibold mb-4">Emergency Contact</h3>
               <div className="text-gray-400">
                 <p className="text-red-400 font-semibold text-lg">Emergency: 911</p>
-                <p>Support: 1-800-AEROVITA</p>
-                <p>Email: emergency@aerovita.com</p>
+                <p>Support: 1-800-SKYMED</p>
+                <p>Email: emergency@skymed.com</p>
               </div>
             </div>
           </div>
           
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 AeroVita Emergency Delivery Network. All rights reserved.</p>
+            <p>&copy; 2024 SkyMed Emergency Delivery Network. All rights reserved.</p>
+            <div className="flex items-center justify-center space-x-2 mt-2">
+              <span>Made with</span>
+              <Heart className="w-4 h-4 text-red-500 fill-current" />
+              <span>by</span>
+              <span className="font-semibold text-blue-400">Team Helidx</span>
+            </div>
           </div>
         </div>
       </footer>

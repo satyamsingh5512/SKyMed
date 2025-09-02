@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, AlertCircle, Loader, Shield, LogIn, X, ArrowRight, Zap, Globe, Heart, Cpu, Wifi, Plus, MapPin } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
-import AeroVitaLogo from '../components/AeroVitaLogo';
+import SkyMedLogo from '../components/SkyMedLogo';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -185,12 +185,12 @@ const Login: React.FC = () => {
           <div className={`transform transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
             {/* Logo */}
             <div className="flex justify-center mb-8">
-              <AeroVitaLogo size="xl" />
+              <SkyMedLogo size="xl" />
             </div>
 
             {/* Hero Content */}
             <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-              <span className="block animate-pulse">AeroVita</span>
+              <span className="block animate-pulse">SkyMed</span>
               <span className="block text-3xl md:text-4xl font-light text-blue-300 mt-2">
                 Autonomous Emergency Response Network
               </span>
@@ -293,10 +293,10 @@ const Login: React.FC = () => {
             <div className="p-8">
               <div className="text-center mb-8">
                 <div className="flex justify-center mb-4">
-                  <AeroVitaLogo size="lg" />
+                  <SkyMedLogo size="lg" />
                 </div>
                 <h2 className="text-3xl font-bold text-white">Welcome back</h2>
-                <p className="mt-2 text-gray-300">Sign in to your AeroVita account</p>
+                <p className="mt-2 text-gray-300">Sign in to your SkyMed account</p>
               </div>
 
               <form className="space-y-6" onSubmit={handleSubmit}>

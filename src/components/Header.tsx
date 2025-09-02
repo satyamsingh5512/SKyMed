@@ -1,6 +1,6 @@
 import React from 'react';
 import { Menu, Bell, User, Activity } from 'lucide-react';
-import AeroVitaLogo from './AeroVitaLogo';
+import SkyMedLogo from './SkyMedLogo';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -18,10 +18,10 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
             <Menu className="w-6 h-6" />
           </button>
           <div className="flex items-center ml-4">
-            <AeroVitaLogo size="md" />
-            <div className="ml-3">
-              <h1 className="text-xl font-bold text-gray-900">AeroVita</h1>
-              <p className="text-sm text-gray-600">Emergency Response Network</p>
+            <SkyMedLogo size="sm" />
+            <div className="ml-2">
+              <h1 className="text-lg font-bold text-gray-900">SkyMed</h1>
+              <p className="text-xs text-gray-600">Emergency Medical Drone Network</p>
             </div>
           </div>
         </div>

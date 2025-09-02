@@ -243,7 +243,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       
       // Clear any cached data
       localStorage.removeItem('supabase.auth.token');
-      localStorage.removeItem('sb-' + supabaseUrl.split('//')[1].split('.')[0] + '-auth-token');
+      // Clear all supabase auth tokens
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith('sb-') && key.includes('-auth-token')) {
+          localStorage.removeItem(key);
+        }
+      });
       sessionStorage.clear();
       
       console.log('User signed out successfully');

@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, User, Bell, Sun, Moon, LogOut, Settings } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useAuth } from '../contexts/AuthContext';
-import AeroVitaLogo from './AeroVitaLogo';
+import SkyMedLogo from './SkyMedLogo';
 import LogoutConfirmDialog from './LogoutConfirmDialog';
 
 const UserHeader: React.FC = () => {
@@ -56,11 +56,11 @@ const UserHeader: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/dashboard" className="flex items-center space-x-3">
-            <AeroVitaLogo size="md" />
+          <Link to="/dashboard" className="flex items-center space-x-2">
+            <SkyMedLogo size="sm" />
             <div>
-              <h1 className="text-xl font-bold text-gray-900 dark:text-white">AeroVita</h1>
-              <p className="text-xs text-gray-600 dark:text-gray-300">Delivering Life, Anytime, Anywhere</p>
+              <h1 className="text-lg font-bold text-gray-900 dark:text-white">SkyMed</h1>
+              <p className="text-xs text-gray-600 dark:text-gray-300">Emergency Medical Drone Network</p>
             </div>
           </Link>
 

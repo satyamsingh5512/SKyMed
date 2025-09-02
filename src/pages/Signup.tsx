@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, AlertCircle, Loader, User, Phone, MapPin, CheckCircle } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import AeroVitaLogo from '../components/AeroVitaLogo';
+import SkyMedLogo from '../components/SkyMedLogo';
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -109,13 +109,13 @@ const Signup: React.FC = () => {
       <div className="max-w-md w-full space-y-8">
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <AeroVitaLogo size="lg" />
+            <SkyMedLogo size="lg" />
           </div>
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
             Create your account
           </h2>
           <p className="mt-2 text-gray-600 dark:text-gray-400">
-            Join AeroVita for emergency medical deliveries
+            Join SkyMed for emergency medical deliveries
           </p>
         </div>
 

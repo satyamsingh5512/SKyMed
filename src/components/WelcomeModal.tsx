@@ -34,7 +34,7 @@ const WelcomeModal: React.FC = () => {
           <div className="flex items-center space-x-2">
             <CheckCircle className="h-6 w-6 text-green-500" />
             <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-              Welcome to AeroVita!
+              Welcome to SkyMed!
             </h2>
           </div>
           <button
@@ -55,7 +55,7 @@ const WelcomeModal: React.FC = () => {
             </h3>
             <p className="text-gray-600 dark:text-gray-400 mb-6">
               Welcome {user.user_metadata?.full_name || user.user_metadata?.name || 'User'}! 
-              Your Google account has been linked and you're ready to use AeroVita.
+              Your Google account has been linked and you're ready to use SkyMed.
             </p>
           </div>
 

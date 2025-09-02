@@ -7,7 +7,24 @@ export function useDeliveries(userId?: string) {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchDeliveries()
+    let mounted = true
+    
+    const loadDeliveries = async () => {
+      if (mounted) {
+        await fetchDeliveries()
+      }
+    }
+    
+    // Set a timeout to prevent infinite loading
+    const loadingTimeout = setTimeout(() => {
+      if (mounted && loading) {
+        console.log('Deliveries loading timeout - setting loading to false')
+        setLoading(false)
+        setError('Loading timeout - please refresh the page')
+      }
+    }, 10000) // 10 second timeout
+    
+    loadDeliveries()
     
     // Subscribe to real-time changes
     const subscription = supabase
@@ -15,12 +32,16 @@ export function useDeliveries(userId?: string) {
       .on('postgres_changes', 
         { event: '*', schema: 'public', table: 'deliveries' },
         () => {
-          fetchDeliveries()
+          if (mounted) {
+            fetchDeliveries()
+          }
         }
       )
       .subscribe()
 
     return () => {
+      mounted = false
+      clearTimeout(loadingTimeout)
       subscription.unsubscribe()
     }
   }, [userId])
@@ -28,6 +49,8 @@ export function useDeliveries(userId?: string) {
   const fetchDeliveries = async () => {
     try {
       setLoading(true)
+      setError(null)
+      
       let query = supabase
         .from('deliveries')
         .select('*')
@@ -39,10 +62,19 @@ export function useDeliveries(userId?: string) {
 
       const { data, error } = await query
 
-      if (error) throw error
+      if (error) {
+        console.error('Deliveries fetch error:', error)
+        throw error
+      }
+      
+      console.log('Deliveries fetched successfully:', data?.length || 0, 'records')
       setDeliveries(data || [])
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred')
+      const errorMessage = err instanceof Error ? err.message : 'An error occurred'
+      console.error('fetchDeliveries error:', err)
+      setError(errorMessage)
+      // Set empty array on error to prevent crashes
+      setDeliveries([])
     } finally {
       setLoading(false)
     }

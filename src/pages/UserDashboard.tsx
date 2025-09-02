@@ -3,16 +3,42 @@ import { Link } from 'react-router-dom';
 import { Package, Clock, CheckCircle, AlertTriangle, Plus, MapPin } from 'lucide-react';
 import MapView from '../components/MapView';
 import WelcomeModal from '../components/WelcomeModal';
+import DatabaseConnectionTest from '../components/DatabaseConnectionTest';
+import DatabaseInitializer from '../components/DatabaseInitializer';
 
 import { useDeliveries } from '../hooks/useDeliveries';
 import { useAuthCallback } from '../hooks/useAuthCallback';
 
 const UserDashboard: React.FC = () => {
-  const { deliveries, loading } = useDeliveries();
+  const { deliveries, loading, error } = useDeliveries();
   useAuthCallback(); // Handle OAuth profile creation
 
-  // Format deliveries for display
-  const recentParcels = deliveries.slice(0, 5).map(delivery => ({
+  // Handle error state
+  if (error) {
+    console.error('Dashboard error:', error);
+  }
+
+  // Show loading state for initial load
+  if (loading && (!deliveries || deliveries.length === 0)) {
+    return (
+      <>
+        <WelcomeModal />
+        <div className="space-y-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">Welcome to SkyMed</h1>
+            <p className="text-base text-gray-600 mb-6 dark:text-gray-300">Loading your dashboard...</p>
+            <div className="flex items-center justify-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="ml-2 text-gray-600 dark:text-gray-300">Loading...</span>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Format deliveries for display with fallback for empty deliveries
+  const recentParcels = (deliveries || []).slice(0, 5).map(delivery => ({
     id: `SP-${delivery.id.slice(-6).toUpperCase()}`,
     type: delivery.package_type,
     status: delivery.status,
@@ -67,9 +93,17 @@ const UserDashboard: React.FC = () => {
     <>
       <WelcomeModal />
       <div className="space-y-8">
+      {/* Database Connection Test - Remove this in production */}
+      {error && (
+        <div className="mb-6 space-y-4">
+          <DatabaseConnectionTest />
+          <DatabaseInitializer />
+        </div>
+      )}
+
       {/* Welcome Section */}
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">Welcome to AeroVita</h1>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2 dark:text-white">Welcome to SkyMed</h1>
         <p className="text-base text-gray-600 mb-6 dark:text-gray-300">Emergency delivery service at your fingertips</p>
         
         <Link
@@ -138,7 +172,26 @@ const UserDashboard: React.FC = () => {
         </div>
 
         <div className="space-y-3">
-          {recentParcels.map((parcel) => (
+          {loading ? (
+            <div className="flex items-center justify-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+              <span className="ml-2 text-gray-600 dark:text-gray-300">Loading deliveries...</span>
+            </div>
+          ) : recentParcels.length === 0 ? (
+            <div className="text-center py-8">
+              <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600 dark:text-gray-300 mb-2">No deliveries yet</p>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Your recent parcels will appear here</p>
+              <Link
+                to="/send"
+                className="inline-flex items-center mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Send Your First Parcel
+              </Link>
+            </div>
+          ) : (
+            recentParcels.map((parcel) => (
             <div key={parcel.id} className="flex items-center space-x-3 p-3 bg-gray-50 rounded-md hover:bg-gray-100 transition-colors dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
               <div className="flex-shrink-0">
                 {getStatusIcon(parcel.status)}
@@ -171,7 +224,7 @@ const UserDashboard: React.FC = () => {
                 </div>
               </div>
             </div>
-          ))}
+          )))}
         </div>
       </div>
 
